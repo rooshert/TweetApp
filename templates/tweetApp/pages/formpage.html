@@ -1,0 +1,9 @@
+<form method="post">
+	{% csrf_token %}
+
+	{% for field in tweet_form %}
+		<p>{{ field }}</p>
+	{% endfor %}
+
+	<input type="submit" value="Click!">
+</form>

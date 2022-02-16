@@ -1,0 +1,15 @@
+
+<form id="tweet-form" method="POST">
+	{% csrf_token %}
+
+	{% for field in tweet_form %}
+	 	<small class="d-none alert alert-danger" id="tweet-form-error">{{ field.errors }}</small>
+	 	<p align="center">{{ field.label_tag }} {{ field }}</p>
+	 	{% if field.help_text %}
+	 		<p class="help">{{ field.help_text|safe }}</p>
+	 	{% endif %}
+	 {% endfor %}
+
+       	<button id="sendButton" type='submit' class='btn btn-primary'>Tweet</button>
+</form>
+
