@@ -59,22 +59,23 @@ export function TweetsComponent(props) {
    */
   const [newTweets, setNewTweets] = useState([]);  // Список newTweets хранит объекты созданных твитов
   const textAreaRef = React.createRef()  // Компонент для манипуляции над текстовыми полями формы
+  
+  const tweetListUpdateHandler = (response, status) => {
+    // backend api response handler
+    let tempNewTweet = [...newTweets]  // Копируем список твитов в переменную tempNewTweet
+    if (status === 201) {
+      tempNewTweet.unshift(response)
+      setNewTweets(tempNewTweet);
+    } else {
+      alert('create tweet error, please try again')
+    }
+  }
+
   const tweetSendHandler = (event) => {
     // Функция-обработчик отправки формы твита
-    event.preventDefault();  // Останавливаем дефолтное поведение формы
+    event.preventDefault();
     const newTweet = textAreaRef.current.value;  // Получаем твит из текстового поля формы
-    let tempNewTweet = [...newTweets]  // Копируем список твитов в переменную tempNewTweet
-    
-    createTweet(newTweet, (response, status) => {
-      // Функция-обработчик действий после создания твита
-      if (status === 201) {
-        console.log(response)
-        tempNewTweet.unshift(response)
-      } else {
-        alert('create tweet error, please try again')
-      }
-    })
-    setNewTweets(tempNewTweet);  // Ложим объект твита в список newTweets
+    createTweet(newTweet, tweetListUpdateHandler)
     textAreaRef.current.value = '';  // Очищаем текстовое поле формы
   }
 
