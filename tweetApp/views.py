@@ -113,7 +113,6 @@ def tweet_action_view(request, *args, **kwargs):
             return Response({'message': 'Sorry, tweet not found!'}, status=404)
         tweet = qs.first()
         if tweet_action.lower() == 'socialscore':
-            ipdb.set_trace()
             user = request.user
             if tweet.likes.contains(user):
                 tweet.likes.remove(user)
@@ -128,7 +127,7 @@ def tweet_action_view(request, *args, **kwargs):
                     parent=parent_tweet)
             tweet_serial = TweetSerializer(new_tweet)
             return Response(tweet_serial.data, status=201)
-    
+
     if action_serial.errors: # Если поля сериализатора не валидны - возвращаем сообщение об ошибке с кодом 400 - запрос не обработан
         return Response({'message': action_serial.errors}, status=400)
     

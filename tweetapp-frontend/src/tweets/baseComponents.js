@@ -1,18 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {formatRetweetItem, formatTweetItem} from './formatTweetsComponents';
+
+import {TweetItem, RetweetWithCommentItem, RetweetItem} from './formatTweetsComponents';
 import {loadTweets, createTweet} from './request2EndpointsComponents';
 
 
 export function Tweet(props) {
   /* Фунция возвращает твит в виде HTML кода */
-  const {tweet} = props;
-  
-  if (tweet.is_retweet) {
-    return formatRetweetItem(tweet);
+  const {tweet, addTweetCallback} = props;
+
+  if (tweet.retweet_with_comment == true) {
+    // Твит с комментарием
+    return <RetweetWithCommentItem tweet={tweet} addTweetCallback={addTweetCallback} />
   }
-  
-  return formatTweetItem(tweet)
+  if (tweet.is_retweet == true) {
+    // обычный ретвит
+    return <RetweetItem tweet={tweet} addTweetCallback={addTweetCallback} />
+  } 
+
+  return <TweetItem tweet={tweet} addTweetCallback={addTweetCallback} />
 }
+
 
 function TweetsList(props) {
   /* Компонент списка твитов.
@@ -21,7 +28,7 @@ function TweetsList(props) {
   const [tweetsInit, setTweetsInit] = useState([])  // ...
   const [tweets, setTweets] = useState([])  // Список newTweets хранит объекты все твитов
   const [tweetsDidSet, setTweetsDidSet] = useState(false)
-  const {newTweets} = props;  // Список объект новосозданных твитов
+  const {newTweets, addTweetCallback} = props;  // Список объект новосозданных твитов
   useEffect(() => { 
     const final = [...newTweets].concat(tweetsInit)
     if (final.length !== tweets.length) {
@@ -47,9 +54,10 @@ function TweetsList(props) {
   
   return tweets.map((item, index) => {
     // Проходимся циклом по списку объктов твитов и форматируем каждый элемент в HTML-код с помощью компонента Tweet
-    return <Tweet tweet={item} />
+    return <Tweet tweet={item} addTweetCallback={addTweetCallback} />
   })
 }
+
 
 export function TweetsComponent(props) {
   /*  Главный компонент приложение. 
@@ -60,22 +68,23 @@ export function TweetsComponent(props) {
   const [newTweets, setNewTweets] = useState([]);  // Список newTweets хранит объекты созданных твитов
   const textAreaRef = React.createRef()  // Компонент для манипуляции над текстовыми полями формы
   
-  const tweetListUpdateHandler = (response, status) => {
-    // backend api response handler
+  const tweetListUpdateCallback = (response, status) => {
+    // колл-бэк функция которая добавляет новосоданный твит в список твитов
     let tempNewTweet = [...newTweets]  // Копируем список твитов в переменную tempNewTweet
-    if (status === 201) {
+    // if (status === 201) {
+    if (status === 201 || status === 200) {
       tempNewTweet.unshift(response)
-      setNewTweets(tempNewTweet);
+      setNewTweets(tempNewTweet)
     } else {
       alert('create tweet error, please try again')
     }
   }
 
-  const tweetSendHandler = (event) => {
+  const tweetSendHandler = (e) => {
     // Функция-обработчик отправки формы твита
-    event.preventDefault();
+    e.preventDefault();
     const newTweet = textAreaRef.current.value;  // Получаем твит из текстового поля формы
-    createTweet(newTweet, tweetListUpdateHandler)
+    createTweet(newTweet, tweetListUpdateCallback)
     textAreaRef.current.value = '';  // Очищаем текстовое поле формы
   }
 
@@ -88,6 +97,6 @@ export function TweetsComponent(props) {
       </form>
     </div>
 
-  <TweetsList newTweets={newTweets} />
+  <TweetsList newTweets={newTweets} addTweetCallback={tweetListUpdateCallback} />
   </div>
 }

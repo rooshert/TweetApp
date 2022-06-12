@@ -1,71 +1,97 @@
-import {React, useState} from 'react';
+import React, { useState} from 'react';
+import {actionTweet, actionRetweetWithComment} from './request2EndpointsComponents';
+
+import Modal from 'react-modal';
 
 
-function actionTweetButton(tweet_id, action) {
-	const url = '/api/tweet/action';
-	const method = 'POST';
-	const data = JSON.stringify({
-		id: tweet_id,
-		action: action
-	});
-	// const csrftoken = getCookie('csrftoken');
-	// let xhr = new XMLHttpRequest();
-	// xhr.open(method, url);
-	// xhr.setRequestHeader('HTTP_X_REQUESTED_WITH', 'XMLHttpRequest');
-	// xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-	// xhr.setRequestHeader('Content-Type', 'application/json');
-	// xhr.setRequestHeader('X-CSRFToken', csrftoken);
+const customStyles = {
+  content: {
+  	width: '500px',
+  	height: '250px', 
+  	background: 'black',
+    top: '300px',
+    left: '50%',
+    right: 'auto',
+    bottom: '150px',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
-	// xhr.addEventListener("readystatechange", () => {
-	// 	if(xhr.readyState === 4 && xhr.status === 200) {
-	// 		if(action === 'like') {
-	// 			socialScoreHandler(tweet_id, xhr);  // Обработка <лайка\дизлайка>
-	// 		} else if(action === 'unlike') {
-	// 			socialScoreHandler(tweet_id, xhr);
-	// 		} else if(action === 'retweet') {
-	// 			retweetHandler(xhr);  // Обработка ретвита
-	// 		}
-	// 	}
-	// });
-	// xhr.send(data);
-}	
+export function RetweetWithCommentBtn(props) {
+  let subtitle;
+	const {tweet, addTweetCallback} = props;
+	const [modalIsOpen, setIsOpen] = useState(false);
+	const textAreaRef = React.createRef()
+
+  function openModal() {
+    setIsOpen(true);
+  }
+  function afterOpenModal() {
+    subtitle.style.color = '#f00';
+	}
+  function closeModal() {
+    setIsOpen(false);
+  }
+	let ClickRetweet = (e) => {
+		e.preventDefault()
+		const retweetVal = textAreaRef.current.value
+		actionRetweetWithComment(tweet.id, 'retweet', addTweetCallback, retweetVal)
+		closeModal()
+	}
+	
+	return (<div>
+      <button className='btn btn-warning btn-sm' onClick={openModal}>
+      	retweet with comment
+      </button>
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal">
+
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Retweet</h2>
+        <form>
+          <textarea ref={textAreaRef} required={true} className='form-control' />
+          <br></br>
+          <button className='btn btn-warning btn-sm' onClick={ClickRetweet}>retweet!</button>
+        </form>
+
+      </Modal>
+    </div>
+  )
+}
+
 
 export function RetweetBtn(props) {
-  const {tweet} = props;
-  return <button id='retweet-id' className='btn btn-outline-success btn-sm'>retweet</button>
+	const {tweet, addTweetCallback} = props
+	let ClickRetweet = (e) => {
+		e.preventDefault()
+		actionTweet(tweet.id, 'retweet', addTweetCallback)
+	}
+
+	return (
+		<button className="btn btn-warning btn-sm" onClick={ClickRetweet}>retweet</button>
+	)
 }
 
-export function UnlikeBtn(props) {
-  const {tweet} = props;
-  return <button id='unlike-counter' className='btn btn-outline-primary btn-sm tweet-unlike'>unlike</button>
-}
 
 export function LikeBtn(props) {
-  const {tweet, displayName} = props;
-  const [likes, setLikes] = useState(tweet.likes ? tweet.likes : 0);
-  const [likeBtnClicked, setLikeBtnClicked] = useState(false);
-  return <button id='like-counter' className='btn btn-primary btn-sm tweet-like'>{tweet.likes} likes</button>
-}
+	let {tweet, action} = props;
+	const actionType = action.actionType
+	const [likes, setLikes] = useState(tweet.likes)
 
-export function ActionBtn(props) {
-  const {tweet, action} = props;
-  const [likes, setLikes] = useState(tweet.likes ? tweet.likes : 0);
-  const [userLike, setUserLike] = useState(tweet.userLike === true ? true : false);
-  let actionType = action.type;
-  let displayName = action.displayName;
-  let handleClick = (event) => {
-    event.preventDefault();
-    if (actionType === 'like') {
-      if (userLike === true) {
-        setLikes(likes - 1);
-	setUserLike(!userLike);
-      } else {
-	setLikes(likes + 1); 
-	setUserLike(!userLike);
-      }
-    }
-  }
-   
-  return <button id='like-counter' className='btn btn-primary btn-sm tweet-like' onClick={handleClick}>{likes} {displayName}</button>
+	let updateLikesCallback = (response, status) => {
+		if (status === 200 || status === 201) {
+			setLikes(response.likes)
+		} 
+	}
+	let likeClickHandler = (e) => {
+		e.preventDefault()
+		actionTweet(tweet.id, actionType, updateLikesCallback)
+	}
+	return (<button className="btn btn-primary btn-sm" onClick={likeClickHandler}>
+		{likes} Likes
+	</button>);
 }
-

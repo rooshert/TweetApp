@@ -37,8 +37,10 @@ function lookup(method, endpoint, callback, data) {
   xhr.onerror = () => {
     return callback({message: 'the request was an error'}, 400)
   }
+
   xhr.send(jsonData)
 }
+
 
 export function loadTweets(callback) {
   lookup('GET', '/tweets/', callback)
@@ -48,3 +50,12 @@ export function createTweet(newTweet, callback) {
   lookup('POST', '/tweet/create/', callback, {text_content: newTweet})
 }
 
+export function actionTweet(tweetId, actionType, callback) {
+  let data = {id: tweetId, action: actionType}
+  lookup('POST', '/tweet/action', callback, data)
+}
+
+export function actionRetweetWithComment(tweetId, actionType, callback, content) {
+  let data = {id: tweetId, action: actionType, content: content}
+  lookup('POST', '/tweet/action', callback, data)
+}

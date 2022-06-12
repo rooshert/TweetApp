@@ -8,6 +8,7 @@ django = "*"
 djangorestframework = "*"
 ipdb = "*"
 django-cors-headers = "*"
+tzdata = "*"
 
 [dev-packages]
 ipdb = "*"
