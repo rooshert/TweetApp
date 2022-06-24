@@ -35,11 +35,15 @@ export function RetweetWithCommentBtn(props) {
   }
 	let ClickRetweet = (e) => {
 		e.preventDefault()
+
+		if (tweet.retweet_with_comment === true) {
+			// тут нужно будет дальше написать ссылку на исходных корневой твит
+		}
 		const retweetVal = textAreaRef.current.value
 		actionRetweetWithComment(tweet.id, 'retweet', addTweetCallback, retweetVal)
 		closeModal()
 	}
-	
+
 	return (<div>
       <button className='btn btn-warning btn-sm' onClick={openModal}>
       	retweet with comment
@@ -66,9 +70,19 @@ export function RetweetWithCommentBtn(props) {
 
 export function RetweetBtn(props) {
 	const {tweet, addTweetCallback} = props
+
 	let ClickRetweet = (e) => {
 		e.preventDefault()
-		actionTweet(tweet.id, 'retweet', addTweetCallback)
+		let tweetId = null
+		if (tweet.parent) {
+			console.log(111)
+			let parentTweetId = tweet.parent.id
+			tweetId = parentTweetId
+		} else {
+			tweetId = tweet.id
+		}
+
+		actionTweet(tweetId, 'retweet', addTweetCallback)
 	}
 
 	return (

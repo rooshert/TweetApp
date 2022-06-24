@@ -29,6 +29,7 @@ function TweetsList(props) {
   const [tweets, setTweets] = useState([])  // Список newTweets хранит объекты все твитов
   const [tweetsDidSet, setTweetsDidSet] = useState(false)
   const {newTweets, addTweetCallback} = props;  // Список объект новосозданных твитов
+  
   useEffect(() => { 
     const final = [...newTweets].concat(tweetsInit)
     if (final.length !== tweets.length) {
@@ -51,10 +52,12 @@ function TweetsList(props) {
       loadTweets(tweetsLoadedCallback)  // Вызываем функцию загрузки твитов, передаём в неё функцию-колбэк
     }
   }, [tweetsInit, tweetsDidSet, setTweetsDidSet])  // Указываем useEffect отслежывать изменения только над списом useEffect(func, [tweetsInit])
-  
+
   return tweets.map((item, index) => {
     // Проходимся циклом по списку объктов твитов и форматируем каждый элемент в HTML-код с помощью компонента Tweet
-    return <Tweet tweet={item} addTweetCallback={addTweetCallback} />
+    return <Tweet 
+      tweet={item} 
+      addTweetCallback={addTweetCallback} />
   })
 }
 
