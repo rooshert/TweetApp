@@ -18,6 +18,7 @@ const customStyles = {
   },
 };
 
+
 export function RetweetWithCommentBtn(props) {
   let subtitle;
 	const {tweet, addTweetCallback} = props;
@@ -108,4 +109,24 @@ export function LikeBtn(props) {
 	return (<button className="btn btn-primary btn-sm" onClick={likeClickHandler}>
 		{likes} Likes
 	</button>);
+}
+
+
+export function Link2TweetBtn(props) {
+	let {tweet} = props
+
+	const path = window.location.pathname
+  const match = path.match(/(?<tweetid>\d+)/)
+	const urlTweetId = match ? match.groups.tweetid : -1
+	const isDetail = `${tweet.id}` === `${urlTweetId}`
+
+	const handleView = (e) => {
+		e.preventDefault()
+		window.location.href = `/${tweet.id}`
+	}
+
+	if (isDetail === true) {
+		return null
+	}
+	return <button className="btn btn-warning btn-sm" onClick={handleView}>view</button>
 }

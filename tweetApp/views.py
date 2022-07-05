@@ -30,6 +30,10 @@ def tweets_homepage(request, *args, **kwargs):
 def tweets_list_view(request, *args, **kwargs):
     # Вывод списка твитов
     qs = Tweet.objects.all()
+    username = request.GET.get('username')  # ?username=dmitry
+    if username:
+        qs = qs.filter(user__username__iexact=username)
+
     serial = TweetSerializer(qs, many=True) # Сериализация объекта твитов в примитивный тип Python
     return Response(serial.data, status=200)  # Возвращает JSON с данными и статусом 200 - запрос выполнен успешно
     

@@ -32,6 +32,7 @@ function lookup(method, endpoint, callback, data) {
     xhr.setRequestHeader('X-CSRFToken', csrftoken)
   }
   xhr.onload  = () => {
+    console.log(callback)
     return callback(xhr.response, xhr.status)
   }
   xhr.onerror = () => {
@@ -42,8 +43,19 @@ function lookup(method, endpoint, callback, data) {
 }
 
 
-export function loadTweets(callback) {
-  lookup('GET', '/tweets/', callback)
+export function loadTweets(username, callback) {
+  let endpoint = '/tweets/'
+  let method = 'GET'
+  if (username) {
+    endpoint = `/tweets/?username=${username}`
+  }
+  lookup(method, endpoint, callback)
+}
+
+export function loadTweetById(id, callback) {
+  let endpoint = `/tweet/${id}/detail/`
+  let method = 'GET'
+  lookup(method, endpoint, callback)
 }
 
 export function createTweet(newTweet, callback) {

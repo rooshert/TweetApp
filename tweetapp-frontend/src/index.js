@@ -4,16 +4,30 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 import App from './App';
-import {TweetsComponent} from './tweets/baseComponents';
+import {TweetsComponent, TweetDetailComponent} from './tweets/baseComponents';
 
 
-const appElem = document.getElementById('root')
+const component = React.createElement
+
+const appElem = document.getElementById('tweet-root')
 if (appElem) {
 	ReactDOM.render(<App />, appElem)
 }
-const tweetsElem = document.getElementById('root')
+
+const tweetsElem = document.getElementById('tweet-app')
 if (tweetsElem) {
-	ReactDOM.render(<TweetsComponent />, appElem)
+	ReactDOM.render(
+		component(TweetsComponent, tweetsElem.dataset), 
+		tweetsElem
+	)
 }
+
+const tweetDetailElem = document.querySelectorAll('.tweet-detail')
+tweetDetailElem.forEach(container => {
+	ReactDOM.render(
+		component(TweetDetailComponent, container.dataset), 
+		container
+	)
+})
 
 reportWebVitals();

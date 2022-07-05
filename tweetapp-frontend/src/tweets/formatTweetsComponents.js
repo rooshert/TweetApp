@@ -1,4 +1,8 @@
-import {LikeBtn, RetweetBtn, RetweetWithCommentBtn} from './buttonComponents';
+import {
+	LikeBtn, 
+	RetweetBtn, 
+	RetweetWithCommentBtn,
+	Link2TweetBtn} from './buttonComponents';
 
 
 export function TweetItem(props) {
@@ -18,6 +22,7 @@ export function TweetItem(props) {
 			<LikeBtn tweet={tweet} action={{actionType: 'socialscore'}} />
 			<RetweetBtn tweet={tweet} addTweetCallback={addTweetCallback} />
 			<RetweetWithCommentBtn tweet={tweet} addTweetCallback={addTweetCallback} />
+			<Link2TweetBtn tweet={tweet} />
 		</div>
 
 	  <div>
@@ -37,7 +42,7 @@ export function RetweetWithCommentItem(props) {
 		
 		<div className="card-header">
 			<a style={{color: 'yellow'}}>@{tweet.user}</a>
-	    <em style={{color: 'yellow', marginLeft: '450px'}}>#full retweet from @{tweet.parent.user}</em>
+	    <em style={{color: 'yellow', marginLeft: '530px'}}>#full retweet from @{tweet.parent.user}</em>
  	  </div>
 		<div className="card-body">
 	  		<p className="card-text">{tweet.text_content}</p>
@@ -54,10 +59,11 @@ export function RetweetWithCommentItem(props) {
 			<LikeBtn tweet={tweet} action={{actionType: 'socialscore'}} />
 			<RetweetBtn tweet={tweet} addTweetCallback={addTweetCallback} />
 			<RetweetWithCommentBtn tweet={tweet} addTweetCallback={addTweetCallback} />
+			<Link2TweetBtn tweet={tweet} />
 		</div>
 
 	    <div>
-	    	<em style={{color: 'yellow', marginLeft: '630px'}}>{tweet.date_created}</em>
+	    	<em style={{color: 'yellow', marginLeft: '610px'}}>{tweet.date_created}</em>
 	    </div>
   	</div>
 }
@@ -79,6 +85,7 @@ export function RetweetItem(props) {
 			<LikeBtn tweet={tweet} action={{actionType: 'socialscore'}} />
 			<RetweetBtn tweet={tweet} addTweetCallback={addTweetCallback} />
 			<RetweetWithCommentBtn tweet={tweet} addTweetCallback={addTweetCallback} />
+			<Link2TweetBtn tweet={tweet} />
 		</div>
 
 	    <div><em style={{color: 'yellow', marginLeft: '630px'}}>{tweet.parent.date_created}</em></div>
