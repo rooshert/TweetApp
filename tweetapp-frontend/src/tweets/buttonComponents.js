@@ -76,7 +76,6 @@ export function RetweetBtn(props) {
 		e.preventDefault()
 		let tweetId = null
 		if (tweet.parent) {
-			console.log(111)
 			let parentTweetId = tweet.parent.id
 			tweetId = parentTweetId
 		} else {

@@ -13,7 +13,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', ]
 
-LOGIN_URL = '/login-page'
+LOGIN_URL = '/login'
 
 INSTALLED_APPS = [
     # django default libs
@@ -29,7 +29,9 @@ INSTALLED_APPS = [
     'corsheaders',
     
     # custom libs
-    'tweetApp'
+    'tweetApp',
+    'accounts',
+    'profiles'
 ]
 
 MIDDLEWARE = [
@@ -48,10 +50,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'TweetMe.urls'
 
+# templates settings
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates2')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
+        'DIRS': [TEMPLATES_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,16 +103,22 @@ USE_L10N = True
 
 USE_TZ = True
 
-# STATIC FILES SETTINGS
-STATIC_URL = '/static/'
 
-REACT_STATIC = str(BASE_DIR.joinpath('tweetapp-frontend').joinpath('build').joinpath('static'))  # path to react static files
+# STATIC FILES SETTINGS
+REACT_STATIC = str(
+    BASE_DIR.joinpath('tweetapp-frontend')
+        .joinpath('build')
+        .joinpath('static')
+    )  # path to react static files
+
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
 	REACT_STATIC,
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static-root')
+
 
 # MEDIA SETTINGS
 MEDIA_URL = '/media/'
@@ -135,16 +146,15 @@ DEFAULT_RENDERER_CLASSES = [
     'rest_framework.renderers.JSONRenderer',
 ]
 
-DEFAULT_AUTHENTICATION_CALSSES = [
+DEFAULT_AUTHENTICATION_CLASSES = [
     'rest_framework.authentication.SessionAuthentication',
 ]
 
 if DEBUG:
     DEFAULT_RENDERER_CLASSES += ['rest_framework.renderers.BrowsableAPIRenderer']
-    DEFAULT_AUTHENTICATION_CALSSES += ['TweetMe.rest_api.dev.DevAuthentication']  # Пример пордключения кастомной аутентификации
+    # DEFAULT_AUTHENTICATION_CLASSES += ['TweetMe.rest_api.dev.DevAuthentication']  # Пример пордключения кастомной аутентификации
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CALSSES,
+    'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
 }
-

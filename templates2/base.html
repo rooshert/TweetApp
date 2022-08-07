@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+    <meta name="theme-color" content="#000000"/>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    {% include "react/css.html" %}
+  
+    <style>
+      .bg-tweetme {
+          background-color: #8e1f1f!important;
+      }
+    </style>
+    
+    <title>TweetApp {% block head_title %}{% endblock head_title%}</title>
+  
+  </head>
+  <body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-modal/3.14.3/react-modal.min.js" integrity="sha512-MY2jfK3DBnVzdS2V8MXo5lRtr0mNRroUI9hoLVv2/yL3vrJTam3VzASuKQ96fLEpyYIT4a8o7YgtUs5lPjiLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    {% include "components/navbar.html" %}
+
+    <div id="tweet-container">
+    <div id="tweet-root"></div>
+    
+    <div class="d-none" id="tweet-app" data-username="cfe" data-can-tweet="false"></div>
+
+      {% block content %}
+      {% endblock content %}
+    </div>
+
+    {% include "react/base_embed.html" %}
+    {% include "react/js.html" %}
+
+  </body>
+</html>

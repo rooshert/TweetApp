@@ -1,5 +1,4 @@
 from collections import namedtuple
-import ipdb
 
 
 class TweetCore:
@@ -83,4 +82,3 @@ class TweetCreator(TweetCore):
                 is_valid=False, 
                 errors=t_form.errors
             )
-

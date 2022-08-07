@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -189,6 +189,7 @@
         var tweetId = match.groups.tweetid
         var tweetRootElem = document.getElementById('tweet-root')
         tweetRootElem.className = 'd-none'
+        
         var tweetElem = "<div class='tweet-detail' data-tweet-id='" + tweetId + "'></div>"
         var rootContainer = document.getElementById('tweet-container')
         rootContainer.innerHTML = tweetElem

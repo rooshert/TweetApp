@@ -31,12 +31,19 @@ function lookup(method, endpoint, callback, data) {
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
     xhr.setRequestHeader('X-CSRFToken', csrftoken)
   }
-  xhr.onload  = () => {
-    console.log(callback)
-    return callback(xhr.response, xhr.status)
+  
+  xhr.onload = () => {
+    if (xhr.status === 403) {
+      const detail = xhr.response.detail
+      if (detail === "Authentication credentials were not provided.") {
+        window.location.href = '/login?showLoginRequired=true'
+      }
+    }
+    callback(xhr.response, xhr.status)
   }
+
   xhr.onerror = () => {
-    return callback({message: 'the request was an error'}, 400)
+    callback({message: 'the request was an error'}, 400)
   }
 
   xhr.send(jsonData)

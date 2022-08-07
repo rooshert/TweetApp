@@ -1,3 +1,4 @@
+import React from 'react';
 import {
 	LikeBtn, 
 	RetweetBtn, 
@@ -51,7 +52,10 @@ export function RetweetWithCommentItem(props) {
 		<div className="card border-warning mb-3" style={{marginLeft: '170px', marginRight: '170px', marginBottom: '25px', marginTop: '0px'}}>
   			
 			<div className="card-body text-dark">
-  			<p className="card-text">{tweet.parent.text_content}</p>
+  			<div className="card-text">
+  				{tweet.parent.text_content}
+  			</div><br></br>
+  			<Link2TweetBtn tweet={tweet.parent} />
   		</div>
 		</div>
 
