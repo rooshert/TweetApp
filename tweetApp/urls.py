@@ -12,7 +12,6 @@ app_name = 'tweetApp'
 urlpatterns = [
     path('', tweets_list_view, name='home_view'),  
     path('<int:tweet_id>', tweets_detail_view, name='tweets_detail_view'),
-    path('profile/<str:username>', tweet_userprofile_view, name='tweet_userprofile_view'),
 
     path('api/', include('tweetApp.rest_api.urls')),
 

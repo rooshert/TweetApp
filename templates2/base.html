@@ -31,11 +31,10 @@
     {% include "components/navbar.html" %}
 
     <div id="tweet-container">
-    <div id="tweet-root"></div>
     
     <div class="d-none" id="tweet-app" data-username="cfe" data-can-tweet="false"></div>
-
       {% block content %}
+        <div id="tweet-root"></div>
       {% endblock content %}
     </div>
 

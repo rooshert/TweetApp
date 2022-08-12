@@ -1,18 +1,20 @@
-import os
+import os, ipdb
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
 PATH2STATIC = settings.STATIC_ROOT
-PATH2TEMPLATES = settings.TEMPLATES_DIR + '/react'
+PATH2TEMPLATES = settings.TEMPLATES_DIR + '\\react'
 
 class Command(BaseCommand):
 	'''
 		Комманда обновления ссылок на статические файлы реакта в django-шаблонах
 	'''
-	display = 'links to react static files updated!'
+	success_display = 'links to react static files updated!'
+	error_display = 'it was not possible to set links to static files of react! Something went wrong!'
 	static_names = ['js', 'css']
 
 	def search_static_files(self, *args, **kwargs):
+		# ipdb.set_trace()
 		sf = {}
 		for dir_name in self.static_names:
 			files_lst = [
@@ -27,16 +29,21 @@ class Command(BaseCommand):
 	def write_staticfiles_2_template(self, *args, **kwargs):
 		for dir_name in self.static_names:
 			if dir_name == 'js':
-				formatted_link = '<script defer="defer" src="\\static\\%s\\%s"></script>'
+				link = '<script src="\\static\\{0}\\{1}"></script>'
 			else:
-				formatted_link = '<link href="\\static\\%s\\%s" rel="stylesheet">'
+				link = '<link href="\\static\\{0}\\{1}" rel="stylesheet">'
 
-			with open(PATH2TEMPLATES + '/%s.html' % dir_name, 'w') as f:
-				static_files_lst = self._static_files[dir_name]
-				for sf in static_files_lst:
-					f.write(formatted_link % (dir_name, sf))
+			path = PATH2TEMPLATES + '\\{0}.html'.format(dir_name) 
+			with open(path, 'w') as f:
+				sf_lst = self._static_files[dir_name]
+				for sf in sf_lst:
+					f.write(link.format(dir_name, sf))
 				f.close()
 
 	def handle(self, *args, **kwargs):
-		self.search_static_files().write_staticfiles_2_template()
-		print(self.display)
+		try:
+			self.search_static_files().write_staticfiles_2_template()
+			self.stdout.write(self.style.SUCCESS(self.success_display))
+		except:
+			self.stdout.write(self.style.WARNING(self.error_display))
+			

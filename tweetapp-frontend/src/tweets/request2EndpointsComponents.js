@@ -36,7 +36,7 @@ function lookup(method, endpoint, callback, data) {
     if (xhr.status === 403) {
       const detail = xhr.response.detail
       if (detail === "Authentication credentials were not provided.") {
-        window.location.href = '/login?showLoginRequired=true'
+        window.location.href = '/account/login?showLoginRequired=true'
       }
     }
     callback(xhr.response, xhr.status)
@@ -51,6 +51,7 @@ function lookup(method, endpoint, callback, data) {
 
 
 export function loadTweets(username, callback) {
+  console.log('username in loadTweets ', username)
   let endpoint = '/tweets/'
   let method = 'GET'
   if (username) {

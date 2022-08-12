@@ -7,25 +7,27 @@ import App from './App';
 import {TweetsComponent, TweetDetailComponent} from './tweets/baseComponents';
 
 
-const component = React.createElement
+const e = React.createElement
 
-const appElem = document.getElementById('tweet-root')
-if (appElem) {
-	ReactDOM.render(<App />, appElem)
+// const tweetRoot = document.getElementById('tweet-root')
+const tweetRoot = document.getElementById('root')
+if (tweetRoot) {
+	ReactDOM.render(<App />, tweetRoot)
 }
 
-const tweetsElem = document.getElementById('tweet-app')
-if (tweetsElem) {
+// const tweetApp = document.getElementById('tweet-app')
+const tweetApp = document.getElementById('tweet-root')
+if (tweetApp) {
 	ReactDOM.render(
-		component(TweetsComponent, tweetsElem.dataset), 
-		tweetsElem
+		e(TweetsComponent, tweetApp.dataset), 
+		tweetApp
 	)
 }
 
 const tweetDetailElem = document.querySelectorAll('.tweet-detail')
 tweetDetailElem.forEach(container => {
 	ReactDOM.render(
-		component(TweetDetailComponent, container.dataset), 
+		e(TweetDetailComponent, container.dataset), 
 		container
 	)
 })

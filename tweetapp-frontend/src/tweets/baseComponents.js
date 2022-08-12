@@ -52,7 +52,7 @@ function TweetsListComponent(props) {
   const [tweetsInit, setTweetsInit] = useState([])  // ...
   const [tweets, setTweets] = useState([])  // Список newTweets хранит объекты все твитов
   const [tweetsDidSet, setTweetsDidSet] = useState(false)
-  const {newTweets, addTweetCallback} = props;  // Список объект новосозданных твитов
+  const {username, newTweets, addTweetCallback} = props;  // Список объект новосозданных твитов
   
   useEffect(() => { 
     const final = [...newTweets].concat(tweetsInit)
@@ -73,9 +73,9 @@ function TweetsListComponent(props) {
           alert('There was an error!');
         }
       }
-      loadTweets(props.username, tweetsLoadedCallback)  // Вызываем функцию загрузки твитов, передаём в неё функцию-колбэк
+      loadTweets(username, tweetsLoadedCallback)  // Вызываем функцию загрузки твитов, передаём в неё функцию-колбэк
     }
-  }, [tweetsInit, tweetsDidSet, setTweetsDidSet, props.username])  // Указываем useEffect отслежывать изменения только над списом useEffect(func, [tweetsInit])
+  }, [tweetsInit, tweetsDidSet, setTweetsDidSet, username])  // Указываем useEffect отслежывать изменения только над списом useEffect(func, [tweetsInit])
 
   return tweets.map((item, index) => {
     // Проходимся циклом по списку объктов твитов и форматируем каждый элемент в HTML-код с помощью компонента Tweet
@@ -96,7 +96,7 @@ export function TweetsComponent(props) {
   const canTweet = props.canTweet === "false" ? false : true
   const [newTweets, setNewTweets] = useState([]);  // Список newTweets хранит объекты созданных твитов
   const textAreaRef = React.createRef()  // Компонент для манипуляции над текстовыми полями формы
-  
+ 
   const tweetListUpdateCallback = (response, status) => {
     // колл-бэк функция которая добавляет новосоданный твит в список твитов
     let tempNewTweet = [...newTweets]  // Копируем список твитов в переменную tempNewTweet
@@ -126,6 +126,10 @@ export function TweetsComponent(props) {
     </div>
     }
 
-  <TweetsListComponent newTweets={newTweets} addTweetCallback={tweetListUpdateCallback} />
+  <TweetsListComponent 
+    username={props.username} 
+    newTweets={newTweets} 
+    addTweetCallback={tweetListUpdateCallback} 
+  />
   </div>
 }

@@ -109,7 +109,7 @@ REACT_STATIC = str(
     BASE_DIR.joinpath('tweetapp-frontend')
         .joinpath('build')
         .joinpath('static')
-    )  # path to react static files
+    )  # path to react static files... frontend/build/static/...
 
 STATIC_URL = '/static/'
 

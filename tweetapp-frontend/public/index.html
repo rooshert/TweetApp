@@ -174,27 +174,27 @@
 
     <div id='tweet-container'></div>
 
-    <div id="tweet-root">
+    <div class='d-none' id='tweet-app'></div>
+    
+    <div 
+      class='d-none' 
+      id='tweet-root' 
+      data-username='DMT' 
+      data-can-tweet='false'>
     </div>
 
-    <div class='d-none' id="tweet-app" data-username="cfe" data-can-tweet="false">
-    </div>
-
-    <script type="text/javascript">
+    <script>
       var path = window.location.pathname
       var idRegex = /(?<tweetid>\d+)/
       var match = path.match(idRegex)
-      
       if (match) {
         var tweetId = match.groups.tweetid
         var tweetRootElem = document.getElementById('tweet-root')
-        tweetRootElem.className = 'd-none'
-        
-        var tweetElem = "<div class='tweet-detail' data-tweet-id='" + tweetId + "'></div>"
+        tweetRootElem.className = 'd-none'        
+        var tweetEl = "<div class='tweet-detail' data-tweet-id='" + tweetId + "'></div>"
         var rootContainer = document.getElementById('tweet-container')
-        rootContainer.innerHTML = tweetElem
+        rootContainer.innerHTML = tweetEl
       }
-
     </script>
 
   </body>

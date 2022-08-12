@@ -2,7 +2,6 @@ from django.shortcuts import render
 
 
 def home_view(request, *args, **kwargs):
-    # return render(request, "pages/feed.html")
     return render(request, "pages/home.html")
 
 def tweets_list_view(request, *args, **kwargs):
