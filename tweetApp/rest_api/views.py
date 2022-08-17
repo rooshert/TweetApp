@@ -33,7 +33,6 @@ def tweets_homepage(request, *args, **kwargs):
 @api_view(['GET']) # К контроллеру можно получить доступ только с помощью http метода GET
 def tweets_list_view(request, *args, **kwargs):
     # Вывод списка твитов
-    ipdb.set_trace()
     qs = Tweet.objects.all()
     username = request.GET.get('username')  # ?username=dmitry
     if username:
